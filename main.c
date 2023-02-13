@@ -76,6 +76,33 @@ int setCommand(char **command, char *board, int x, int y) {
 }
 
 void turn(char *board, int x, int y) {
+	int count;
+	char *newBoard = (char *)malloc(sizeof(char) * x * y);
+	for (int i = y - 1; i > -1; i--) {
+		for (int j = 0; j < x; j++) {
+			count = 0;
+			for (int shiftX = -1; shiftX < 2; shiftX++)
+				for (int shiftY = -1; shiftY < 2; shiftY++) {
+					*(newBoard + j * y + i) = 0;
+					if (shiftY == 0 && shiftX == 0) continue;
+					if (*(board + ((j + shiftX + x) % x) * y + ((i + shiftY + y) % y)) == 1) count += 1;
+				}
+			if (*(board + j * y + i)) {
+				if (count == 2 || count == 3) {
+					*(newBoard + j * y + i) = 1;
+				} else {
+					*(newBoard + j * y + i) = 0;
+				}
+			} else {
+				if (count == 3)
+					*(newBoard + j * y + i) = 1;
+			}
+		}
+	}
+	for (int i = 0; i < x; i++)
+		for (int j = 0; j < y; j++)
+			*(board + i * y + j) = *(newBoard + i * y + j);
+	free(newBoard);
 	return;
 }
 
