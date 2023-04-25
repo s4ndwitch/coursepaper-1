@@ -4,7 +4,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "config.h"
+
 int main() {
+
+    int *values = readConfig("/home/sandwitch/Documents/gameoflife/data/config.conf");
 
     if (!glfwInit()) {
         fprintf(stderr, "Failed to initialise GLFW\n");
@@ -12,7 +16,7 @@ int main() {
     }
 
     GLFWwindow* window;
-    window = glfwCreateWindow(1024, 768, "A Window", NULL, NULL);
+    window = glfwCreateWindow(values[0], values[1], "A Window", NULL, NULL);
     if (window == NULL) {
         fprintf(stderr, "Failed to open a window\n");
         glfwTerminate();

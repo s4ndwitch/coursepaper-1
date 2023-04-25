@@ -1,10 +1,10 @@
 #include <stdlib.h>
 
-#include "list.h"
+#include "config.h"
 
 
 int main() {
-    struct list *a = createList();
-    free(a);
+    int *result = readConfig("/home/sandwitch/Documents/gameoflife/data/config.conf");
+    printf("%d %d %d %d\n", result[0], result[1], result[2], result[3]);
     return 0;
 }
