@@ -141,7 +141,7 @@ int main() {
 	input[29] = 0;
 
 	// Myślę, że nie masz pytań.
-	printf("Halo! Witamy w grze \"Życie\"!\n\nNajpierw, napisz liczbę kratków dla x i y (że są ograniczone typem int):\n\n> ");
+	printf("Halo! Witamy w grze \"Życie\"!\n\nNajpierw, napisz liczbę kratków dla x i y (że są ograniczone typem int):\n\n> ");
 	scanf("%d%d", &x, &y);
 	
 	// Blok generowania pola.
