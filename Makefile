@@ -1,14 +1,15 @@
-GUI_LIBRARIES = glfw3 glew
+# GUI_LIBRARIES = gl glfw3 glew
+GUI_LIBRARIES = gl glu glut
 GUI_FLAGS := $(shell for flag in `pkg-config --libs $(GUI_LIBRARIES)`;\
 	do echo $$flag; done)
 FLAGS = -g -O2
 CC = gcc
 
-.PHONY: gui clean
+.PHONY: gui clean build_gui
 
-gui: build/ bin/ build/config.o build/list.o build/helper.o bin/gui.out clean
+gui: build/ bin/ build/gui.o build/config.o build/list.o build/helper.o build_gui clean
 
-bin/gui.out:
+build_gui:
 	$(CC) -o bin/gui.out $(GUI_FLAGS) build/gui.o build/config.o build/list.o build/helper.o
 
 clean:
