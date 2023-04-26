@@ -1,3 +1,5 @@
+#define TICK_TIME 333
+
 #include <GL/glut.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,8 +7,10 @@
 #include "config.h"
 #include "board.h"
 
+int paused;
 int *values;
 char *board;
+int curX, curY;
 
 void syncBoard() {
     int dx = values[1] / values[2];
@@ -72,20 +76,35 @@ void key(unsigned char key, int x, int y)
         case 't':
             turn(board, values[2], values[3]);
             break;
+        case 'g':
+            setGlaider(board, values[2], values[3], curX, curY);
+            break;
+        case 'p':
+            paused = (paused + 1) % 2;
+            break;
     }
 
     display();
 }
 
-// void tick(int) {
+void tick(int) {
 
-//     // Code for the game.
+    if (!paused) {
+        turn(board, values[2], values[3]);
+        display();
+    }
+    glutTimerFunc(TICK_TIME, tick, 0);
+}
 
-//     glutPostRedisplay();
-//     glutTimerFunc(1000, tick, 0);
-// }
+void updatePos(int x, int y) {
+    curX = x / (values[1] / values[2]);
+    curY = y / (values[0] / values[3]);
+}
 
 int main(int argc, char *argv[]) {
+    curX = 0;
+    curY = 0;
+    paused = 1;
 
     values = readConfig("/home/sandwitch/Documents/gameoflife/data/config.conf");
 
@@ -107,8 +126,9 @@ int main(int argc, char *argv[]) {
     glutDisplayFunc(display);
     glutKeyboardFunc(key);
     glutMouseFunc(onMouseButton);
+    glutPassiveMotionFunc(updatePos);
 
-    // tick(0);
+    tick(0);
 
     glutMainLoop();
 

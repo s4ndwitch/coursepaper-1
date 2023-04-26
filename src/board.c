@@ -90,6 +90,16 @@ int executeCommand(char *input, char **command, char *board, int x, int y) {
 	return 0;
 }
 
+void setGlaider(char *board, int x, int y, int posX, int posY) {
+	if (posX < 0 || posX >= x || posY < 0 || posY >= y)
+		return;
+	*(board + posX * y + (y - 1 - posY)) = 1;
+	*(board + posX * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX - 1) % x) * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX - 1) % x) * y + y - 1 - posY) = 1;
+	*(board + ((posX - 2) % x) * y + y - 1 - posY) = 1;
+}
+
 #ifdef TERMINAL_VERSION__
 
 int main() {
