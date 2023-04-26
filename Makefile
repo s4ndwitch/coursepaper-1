@@ -7,13 +7,16 @@ CC = gcc
 
 .PHONY: gui clean build_gui
 
-gui: build/ bin/ build/gui.o build/config.o build/list.o build/helper.o build_gui clean
+gui: build/ bin/ build/gui.o build/config.o build/list.o build/board.o build/helper.o build_gui clean
 
 build_gui:
-	$(CC) -o bin/gui.out $(GUI_FLAGS) build/gui.o build/config.o build/list.o build/helper.o
+	$(CC) -o bin/gui.out $(GUI_FLAGS) build/gui.o build/config.o build/list.o build/helper.o build/board.o
 
 clean:
 	rm -rf build/*
+
+build/board.o:
+	$(CC) -o build/board.o -c src/board.c
 
 build/gui.o:
 	$(CC) -o build/gui.o -c src/gui.c

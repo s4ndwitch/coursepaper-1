@@ -1,21 +1,31 @@
 #include <GL/glut.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "config.h"
+#include "board.h"
 
 int *values;
+char *board;
 
-void onMouseButton(int button, int state, int x, int y) {
-    if (state == 1) {
-        return;
+void syncBoard() {
+    int dx = values[1] / values[2];
+    int dy = values[0] / values[3];
+
+    for (int i = 0; i < values[2]; i++) {
+        for (int j = 0; j < values[3]; j++) {
+            if (*(board + i * values[3] + j)) {
+                glColor3f(0.0, 0.0, 0.0);
+                glBegin(GL_POLYGON);
+                glVertex2d(dx * i, dy * j);
+                glVertex2d(dx * (i + 1), dy * j);
+                glVertex2d(dx * (i + 1), dy * (j + 1));
+                glVertex2d(dx * i, dy * (j + 1));
+                glEnd();
+            }
+        }
     }
-    int clicked;
-    switch(button) {
-        case GLUT_LEFT_BUTTON:
-            clicked = 0;
-            break;
-    }
-    printf("Clicked on %d %d %d\n", x, y);
+    glFlush();
 }
 
 void display(void) {
@@ -36,6 +46,21 @@ void display(void) {
     }
     glEnd();
     glFlush();
+
+    syncBoard();
+}
+
+void onMouseButton(int button, int state, int x, int y) {
+    if (state == 1 || button != GLUT_LEFT_BUTTON) {
+        return;
+    }
+
+    x /= values[1] / values[2];
+    y = values[3] - y / (values[0] / values[3]) - 1;
+    
+    *(board + x * values[3] + y) = (*(board + x * values[3] + y) + 1) % 2;
+    
+    display();
 }
 
 void key(unsigned char key, int x, int y)
@@ -52,7 +77,14 @@ void key(unsigned char key, int x, int y)
 // }
 
 int main(int argc, char *argv[]) {
+
     values = readConfig("/home/sandwitch/Documents/gameoflife/data/config.conf");
+
+    board = (char *)malloc(sizeof(char) * values[2] * values[3]);
+	for (int i = 0; i < values[2]; i++)
+		for (int j = 0; j < values[3]; j++)
+			*(board + i * values[3] + j) = 0;
+
     int window;
 
     glutInit(&argc, argv);

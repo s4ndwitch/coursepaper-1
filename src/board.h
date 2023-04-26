@@ -1,0 +1,1 @@
+void printBoard(char *board, int x, int y);

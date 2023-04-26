@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "board.h"
+#include "helper.h"
+
 int splitInput(char *input, char **command) {
 	char word[29];
 	int symbolCount = 0, wordCount = 0;
@@ -18,49 +21,6 @@ int splitInput(char *input, char **command) {
 		}
 	}
 	return wordCount;
-}
-
-int parseInt(char *number) {
-	int result = 0;
-	int digit = 1;
-	for (int i = strlen(number) - 1; i > -1; i--) {
-		switch (number[i]) {
-			case '0':
-				result += 0 * digit;
-				break;
-			case '1':
-				result += 1 * digit;
-				break;
-			case '2':
-				result += 2 * digit;
-				break;
-			case '3':
-				result += 3 * digit;
-				break;
-			case '4':
-				result += 4 * digit;
-				break;
-			case '5':
-				result += 5 * digit;
-				break;
-			case '6':
-				result += 6 * digit;
-				break;
-			case '7':
-				result += 7 * digit;
-				break;
-			case '8':
-				result += 8 * digit;
-				break;
-			case '9':
-				result += 9 * digit;
-				break;
-			default:
-				return -1;
-		}
-		digit *= 10;
-	}
-	return result;
 }
 
 int setCommand(char **command, char *board, int x, int y) {
@@ -130,6 +90,8 @@ int executeCommand(char *input, char **command, char *board, int x, int y) {
 	return 0;
 }
 
+#ifdef TERMINAL_VERSION__
+
 int main() {
 	int x, y, result;
 
@@ -159,3 +121,5 @@ int main() {
 	}
 	return 0;
 }
+
+#endif
