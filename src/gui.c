@@ -1,4 +1,3 @@
-#define TICK_TIME 333
 
 #include <GL/glut.h>
 #include <stdio.h>
@@ -7,6 +6,7 @@
 #include "config.h"
 #include "board.h"
 
+int tickTime;
 int paused;
 int *values;
 char *board;
@@ -67,8 +67,22 @@ void onMouseButton(int button, int state, int x, int y) {
     display();
 }
 
-void key(unsigned char key, int x, int y)
-{
+void specialKey(int key, int x, int y) {
+    switch(key) {
+        case 101:
+            tickTime += 1000 / 65;
+            break;
+        case 103:
+            tickTime -= 1000 / 65;
+            if (tickTime < 0)
+                tickTime = 0;
+            break;
+    }
+
+    display();
+}
+
+void key(unsigned char key, int x, int y) {
     switch(key) {
         case 'q':
             exit(0);
@@ -77,10 +91,21 @@ void key(unsigned char key, int x, int y)
             turn(board, values[2], values[3]);
             break;
         case 'g':
-            setGlaider(board, values[2], values[3], curX, curY);
+            setGlider(board, values[2], values[3], curX, curY);
+            break;
+        case 's':
+            setShattle(board, values[2], values[3], curX, curY);
+            break;
+        case 'G':
+            setGun(board, values[2], values[3], curX, curY);
             break;
         case 'p':
             paused = (paused + 1) % 2;
+            break;
+        case 'c':
+            for (int i = 0; i < values[2]; i++)
+                for (int j = 0; j < values[3]; j++)
+                    *(board + i * values[3] + j) = 0;
             break;
     }
 
@@ -88,12 +113,11 @@ void key(unsigned char key, int x, int y)
 }
 
 void tick(int) {
-
     if (!paused) {
         turn(board, values[2], values[3]);
         display();
     }
-    glutTimerFunc(TICK_TIME, tick, 0);
+    glutTimerFunc(tickTime, tick, 0);
 }
 
 void updatePos(int x, int y) {
@@ -102,6 +126,7 @@ void updatePos(int x, int y) {
 }
 
 int main(int argc, char *argv[]) {
+    tickTime = 1000 / 65;
     curX = 0;
     curY = 0;
     paused = 1;
@@ -125,6 +150,7 @@ int main(int argc, char *argv[]) {
     gluOrtho2D(0,values[1],0,values[0]);
     glutDisplayFunc(display);
     glutKeyboardFunc(key);
+    glutSpecialFunc(specialKey);
     glutMouseFunc(onMouseButton);
     glutPassiveMotionFunc(updatePos);
 

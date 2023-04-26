@@ -90,14 +90,70 @@ int executeCommand(char *input, char **command, char *board, int x, int y) {
 	return 0;
 }
 
-void setGlaider(char *board, int x, int y, int posX, int posY) {
+void setGun(char *board, int x, int y, int posX, int posY) {
+	if (posX < 0 || posX >= x || posY < 0 || posY >= y)
+		return;
+	*(board + ((posX + x - 0) % x) * y + (y - 1 - posY + 0) % y) = 1;
+	*(board + ((posX + x - 0) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 1) % x) * y + (y - 1 - posY + 0) % y) = 1;
+	*(board + ((posX + 1) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 10) % x) * y + (y - 1 - posY + 0) % y) = 1;
+	*(board + ((posX + 10) % x) * y + (y - 1 - posY - 1) % y) = 1;
+	*(board + ((posX + 11) % x) * y + (y - 1 - posY - 2) % y) = 1;
+	*(board + ((posX + 12) % x) * y + (y - 1 - posY - 3) % y) = 1;
+	*(board + ((posX + 13) % x) * y + (y - 1 - posY - 3) % y) = 1;
+	*(board + ((posX + 10) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 11) % x) * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX + 12) % x) * y + (y - 1 - posY + 3) % y) = 1;
+	*(board + ((posX + 13) % x) * y + (y - 1 - posY + 3) % y) = 1;
+	*(board + ((posX + 14) % x) * y + (y - 1 - posY - 0) % y) = 1;
+	*(board + ((posX + 15) % x) * y + (y - 1 - posY - 2) % y) = 1;
+	*(board + ((posX + 15) % x) * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX + 16) % x) * y + (y - 1 - posY - 1) % y) = 1;
+	*(board + ((posX + 16) % x) * y + (y - 1 - posY - 0) % y) = 1;
+	*(board + ((posX + 16) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 17) % x) * y + (y - 1 - posY - 0) % y) = 1;
+	*(board + ((posX + 20) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 20) % x) * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX + 20) % x) * y + (y - 1 - posY + 3) % y) = 1;
+	*(board + ((posX + 21) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 21) % x) * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX + 21) % x) * y + (y - 1 - posY + 3) % y) = 1;
+	*(board + ((posX + 22) % x) * y + (y - 1 - posY + 4) % y) = 1;
+	*(board + ((posX + 22) % x) * y + (y - 1 - posY + 0) % y) = 1;
+	*(board + ((posX + 24) % x) * y + (y - 1 - posY + 4) % y) = 1;
+	*(board + ((posX + 24) % x) * y + (y - 1 - posY + 5) % y) = 1;
+	*(board + ((posX + 24) % x) * y + (y - 1 - posY + 0) % y) = 1;
+	*(board + ((posX + 24) % x) * y + (y - 1 - posY - 1) % y) = 1;
+	*(board + ((posX + 34) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 34) % x) * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX + 35) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + 35) % x) * y + (y - 1 - posY + 2) % y) = 1;
+
+}
+
+void setShattle(char *board, int x, int y, int posX, int posY) {
+	if (posX < 0 || posX >= x || posY < 0 || posY >= y)
+		return;
+	*(board + posX * y + (y - 1 - posY) % y) = 1;
+	*(board + posX * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + posX * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX + x - 1) % x) * y + (y - 1 - posY + 3) % y) = 1;
+	*(board + ((posX + x - 1) % x) * y + (y - 1 - posY) % y) = 1;
+	*(board + ((posX + x - 2) % x) * y + (y - 1 - posY) % y) = 1;
+	*(board + ((posX + x - 3) % x) * y + (y - 1 - posY) % y) = 1;
+	*(board + ((posX + x - 4) % x) * y + (y - 1 - posY + 1) % y) = 1;
+	*(board + ((posX + x - 4) % x) * y + (y - 1 - posY + 3) % y) = 1;
+}
+
+void setGlider(char *board, int x, int y, int posX, int posY) {
 	if (posX < 0 || posX >= x || posY < 0 || posY >= y)
 		return;
 	*(board + posX * y + (y - 1 - posY)) = 1;
 	*(board + posX * y + (y - 1 - posY + 1) % y) = 1;
-	*(board + ((posX - 1) % x) * y + (y - 1 - posY + 2) % y) = 1;
-	*(board + ((posX - 1) % x) * y + y - 1 - posY) = 1;
-	*(board + ((posX - 2) % x) * y + y - 1 - posY) = 1;
+	*(board + ((posX + x - 1 + x) % x) * y + (y - 1 - posY + 2) % y) = 1;
+	*(board + ((posX + x - 1 + x) % x) * y + y - 1 - posY) = 1;
+	*(board + ((posX + x - 2 + x) % x) * y + y - 1 - posY) = 1;
 }
 
 #ifdef TERMINAL_VERSION__
