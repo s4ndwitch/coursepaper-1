@@ -65,7 +65,16 @@ void onMouseButton(int button, int state, int x, int y) {
 
 void key(unsigned char key, int x, int y)
 {
-  if( key == 'q' ) exit(0);
+    switch(key) {
+        case 'q':
+            exit(0);
+            break;
+        case 't':
+            turn(board, values[2], values[3]);
+            break;
+    }
+
+    display();
 }
 
 // void tick(int) {
